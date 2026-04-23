@@ -81,7 +81,7 @@ function Hero({ count, setCount }) {
 
       {count > 0 && (
         <p className="text-xs text-slate-500">
-          🎉 Kamu sudah klik{" "}
+          Kamu sudah klik{" "}
           <span className="text-indigo-400 font-semibold">{count}</span> kali!
         </p>
       )}
