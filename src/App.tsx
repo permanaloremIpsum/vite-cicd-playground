@@ -47,7 +47,13 @@ function Navbar() {
   );
 }
 
-function Hero({ count, setCount }) {
+function Hero({
+  count,
+  setCount,
+}: {
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+}) {
   return (
     <section className="relative z-10 text-center px-8 pt-16 pb-10">
       <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-500/10 border border-indigo-500/30 rounded-full text-xs text-indigo-300 mb-6">
@@ -69,7 +75,7 @@ function Hero({ count, setCount }) {
 
       <div className="flex items-center justify-center gap-3 flex-wrap mb-6">
         <button
-          onClick={() => setCount((c) => c + 1)}
+          onClick={() => setCount((c: number) => c + 1)}
           className="px-7 py-3 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/25 active:scale-95"
         >
           Count: {count} →
@@ -81,7 +87,7 @@ function Hero({ count, setCount }) {
 
       {count > 0 && (
         <p className="text-xs text-slate-500">
-          🎉 Kamu sudah klik{" "}
+          Kamu sudah klik{" "}
           <span className="text-indigo-400 font-semibold">{count}</span> kali!
         </p>
       )}
