@@ -9,7 +9,7 @@ const features = [
   {
     icon: "⚛️",
     title: "React 19",
-    desc: "Concurrent features, Server Components, dan hooks terbaru siap digunakan.",
+    desc: "Concurrent features, Server Components, dan hooks terbaru siap digunakan. Semua dalam satu bundle.",
   },
   {
     icon: "🎨",
