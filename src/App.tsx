@@ -75,7 +75,7 @@ function Hero({
 
       <div className="flex items-center justify-center gap-3 flex-wrap mb-6">
         <button
-          onClick={() => setCount((c: number) => c + 1)}
+          onClick={() => setCount((c: string) => c + 1)}
           className="px-7 py-3 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/25 active:scale-95"
         >
           Count: {count} →
