@@ -1,22 +1,5 @@
-import { useState } from "react";
-
-const features = [
-  {
-    icon: "⚡",
-    title: "Vite Build Tool",
-    desc: "HMR ultra-cepat, cold start instan, bundling optimal untuk production.",
-  },
-  {
-    icon: "⚛️",
-    title: "React 19",
-    desc: "Concurrent features, Server Components, dan hooks terbaru siap digunakan. Semua dalam satu bundle.",
-  },
-  {
-    icon: "🎨",
-    title: "Tailwind CSS 4",
-    desc: "Utility-first CSS dengan design system konsisten dan purge otomatis.",
-  },
-];
+import { useShallow } from "zustand/shallow";
+import { useCounter } from "./store";
 
 function Navbar() {
   return (
@@ -47,13 +30,16 @@ function Navbar() {
   );
 }
 
-function Hero({
-  count,
-  setCount,
-}: {
-  count: number;
-  setCount: React.Dispatch<React.SetStateAction<number>>;
-}) {
+function Hero() {
+  const { count, increment, decrement, reset } = useCounter(
+    useShallow((state) => ({
+      count: state.count,
+      increment: state.increment,
+      decrement: state.decrement,
+      reset: state.reset,
+    })),
+  );
+
   return (
     <section className="relative z-10 text-center px-8 pt-16 pb-10">
       <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-500/10 border border-indigo-500/30 rounded-full text-xs text-indigo-300 mb-6">
@@ -75,93 +61,38 @@ function Hero({
 
       <div className="flex items-center justify-center gap-3 flex-wrap mb-6">
         <button
-          onClick={() => setCount((c: number) => c + 1)}
-          className="px-7 py-3 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/25 active:scale-95"
+          onClick={decrement}
+          className="cursor-pointer px-7 py-3 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/25 active:scale-95"
         >
-          Count: {count} →
+          -
         </button>
-        <button className="px-7 py-3 border border-indigo-500/40 hover:border-indigo-400 text-indigo-300 hover:text-indigo-200 font-medium rounded-xl transition-all">
-          Lihat Dokumentasi
+        <div className="px-7 py-3 border border-indigo-500/40 hover:border-indigo-400 text-indigo-300 hover:text-indigo-200 font-medium rounded-xl transition-all">
+          {count}
+        </div>
+        <button
+          onClick={increment}
+          className="cursor-pointer px-7 py-3 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/25 active:scale-95"
+        >
+          +
         </button>
       </div>
 
-      {count > 0 && (
-        <p className="text-xs text-slate-500">
-          Kamu sudah klik{" "}
-          <span className="text-indigo-400 font-semibold">{count}</span> kali!
-        </p>
-      )}
+      <p className="text-xs text-slate-500">
+        Silahkan klik tombol untuk menambah atau mengurangi count.
+      </p>
+      <div className="flex items-center justify-center gap-3 flex-wrap mt-4">
+        <button
+          onClick={reset}
+          className="cursor-pointer px-7 py-3 border border-indigo-500/40 hover:border-indigo-400 text-indigo-300 hover:text-indigo-200 font-medium rounded-xl transition-all"
+        >
+          Reset
+        </button>
+      </div>
     </section>
   );
 }
 
-function CodeBlock() {
-  const [copied, setCopied] = useState(false);
-
-  const code = `npm create vite@latest my-app -- --template react
-cd my-app && npm install
-npm install -D tailwindcss @tailwindcss/vite
-npm run dev`;
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className="relative z-10 mx-8 mb-10 bg-slate-950/80 border border-indigo-500/20 rounded-2xl overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-2.5 bg-indigo-500/8 border-b border-indigo-500/15">
-        <div className="flex gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-red-500" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500" />
-          <div className="w-3 h-3 rounded-full bg-green-500" />
-        </div>
-        <span className="text-xs text-slate-500 font-mono">terminal</span>
-        <button
-          onClick={handleCopy}
-          className="text-xs text-slate-500 hover:text-indigo-300 transition-colors"
-        >
-          {copied ? "✓ Copied!" : "Copy"}
-        </button>
-      </div>
-      <div className="p-5 font-mono text-sm leading-relaxed">
-        {code.split("\n").map((line, i) => (
-          <div key={i} className="flex gap-3">
-            <span className="text-slate-600 select-none">{i + 1}</span>
-            <span>
-              <span className="text-indigo-400">$</span>{" "}
-              <span className="text-slate-300">{line}</span>
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Features() {
-  return (
-    <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-4 px-8 pb-8">
-      {features.map((f) => (
-        <div
-          key={f.title}
-          className="bg-slate-800/50 border border-indigo-500/15 hover:border-indigo-500/40 rounded-xl p-5 transition-all hover:-translate-y-1 cursor-default"
-        >
-          <div className="text-2xl mb-3">{f.icon}</div>
-          <h3 className="text-sm font-semibold text-slate-200 mb-1.5">
-            {f.title}
-          </h3>
-          <p className="text-xs text-slate-500 leading-relaxed">{f.desc}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export default function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <div className="min-h-screen bg-slate-900 text-slate-200 overflow-hidden relative">
       {/* Grid background */}
@@ -183,9 +114,9 @@ export default function App() {
       />
 
       <Navbar />
-      <Hero count={count} setCount={setCount} />
-      <CodeBlock />
-      <Features />
+      <Hero />
+      {/* <CodeBlock /> */}
+      {/* <Features /> */}
 
       <footer className="relative z-10 text-center py-4 border-t border-indigo-500/10 text-xs text-slate-600">
         Scaffold dengan{" "}
